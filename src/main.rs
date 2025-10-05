@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use clap::Parser;
-use goose::parse::parser::parse_go_file;
+use goose::parser::parse_go_file;
+use goose::ssa::builder::SSABuilder;
 
 /// Go symbolic execution tool.
 #[derive(Parser, Debug)]
@@ -20,7 +21,13 @@ fn main() {
 
     match tree {
         Ok(tree) => {
-            goose::parse::pretty::pretty_print_tree(&tree);
+            let decls = tree.decl;
+            println!("{:#?}", decls);
+
+            let mut ssa = SSABuilder::new(&decls);
+            let ssa_tree = ssa.build();
+
+            println!("{:#?}", ssa_tree);
         },
         Err(e) => eprintln!("Error parsing file: {}", e),
     }
