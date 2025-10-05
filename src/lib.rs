@@ -1,4 +1,2 @@
-pub mod parse;
-// pub mod ast;
-// pub mod ir;
-// mod cfg;
+pub mod parser;
+pub mod ssa;
